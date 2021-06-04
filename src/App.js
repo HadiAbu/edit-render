@@ -1,24 +1,47 @@
-import logo from './logo.svg';
+import {useState} from 'react';
+
+import Layout from './Layout/Layout';
+import Footer from './Footer/Footer';
+import Header from './Header/Header';
+import Editor from './Editor/Editor';
+import Renderer from './Renderer/Renderer';
+
 import './App.css';
 
+const useWebComponent = () => {
+  const[display, setDisplay] = useState('');
+
+  const onChangeHandler = (e) =>{
+    setDisplay(e); 
+  }
+
+  return {
+    display: display,
+    onchange: onChangeHandler
+  }
+}
+
 function App() {
+  const WebComponents = [
+    { 'id' : 1,
+      'type': 'h',
+      ...useWebComponent()
+    },
+    { 'id' : 2,
+      'type': 'p',
+      ...useWebComponent()
+    },
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header/>
+        <Layout>  
+          <Editor componentsToEdit={[...WebComponents]} />  
+          <Renderer componentsToRender={[...WebComponents]}/>
+        </Layout>
+      <Footer/>
+    </>
   );
 }
 
